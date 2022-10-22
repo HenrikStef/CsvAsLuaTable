@@ -5,7 +5,8 @@ function Csv:new(path, key, hasHeader, separator)
    local obj = {}                       -- our new object
    setmetatable(obj,Csv)                -- make Csv handle lookup
    obj.path = path                      -- path to csv file
-   obj.key = key or nil                 -- column name to use as key in dict.
+   obj.key = key or nil                 -- column name or index to use as key
+                                        -- in dictionary
    obj.hasHeader = hasHeader or false   -- use first line as header
    obj.separator = separator or ","     -- character to use as separator
 
@@ -75,7 +76,7 @@ function Csv:parseHeader()
 
     -- Find the index of the specified key
     if self.key ~= nil then
-        if self.key:match("^%d+$") then
+        if type(self.key) == "number" then
             -- numeric
             if self.key <= #self.header then
                 self.keyColumn = self.key
